@@ -16,6 +16,9 @@ const App = () => {
     { title: "Got state?", likes: 3 },
   ]);
 
+  // input state
+  const [newPostTitle, setNewPostTitle] = useState("");
+
   const handleAddLike = (post: Post) => {
     post.likes++;
 
@@ -24,6 +27,15 @@ const App = () => {
 
   const handleDeletePost = (postToDelete: Post) => {
     setPosts(posts.filter((post) => post !== postToDelete));
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const newPost: Post = { title: newPostTitle, likes: 0 };
+
+    setPosts([...posts, newPost]);
+    setNewPostTitle("");
   };
 
   return (
@@ -50,6 +62,25 @@ const App = () => {
       <hr />
 
       <h2>Posts</h2>
+
+      <form className="mb-3" onSubmit={handleFormSubmit}>
+        <div className="input-group">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Post title..."
+            onChange={(e) => setNewPostTitle(e.target.value)}
+            value={newPostTitle}
+            required
+          />
+          <button type="submit" className="btn btn-primary">
+            Create
+          </button>
+          <div className="form-text text-warning">
+            Title has to be atleast 5 characters long.
+          </div>
+        </div>
+      </form>
 
       {posts.length <= 0 && <p>No posts were found... 😟</p>}
 
