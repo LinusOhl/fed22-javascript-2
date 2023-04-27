@@ -39,11 +39,8 @@ const App = () => {
     setSalary(salary + amount);
   };
 
-  const handleDeletePost = (post: Post) => {
-    const newPosts = posts.splice(posts.indexOf(post), 1);
-    console.log(posts);
-
-    setPosts([...posts]);
+  const handleDeletePost = (postToDelete: Post) => {
+    setPosts(posts.filter((post) => post !== postToDelete));
   };
 
   return (
@@ -139,27 +136,29 @@ const App = () => {
 
       <h2>Posts</h2>
 
-      {posts.length <= 0 && <p>No posts were found...</p>}
+      {posts.length <= 0 && <p>No posts were found... 😟</p>}
 
-      <ul>
-        {posts.map((post, index) => (
-          <li className="mb-1" key={index}>
-            {post.title} ({post.likes} likes)
-            <button
-              className="btn btn-success btn-sm ms-1"
-              onClick={() => handleAddLike(post)}
-            >
-              ♥
-            </button>
-            <button
-              className="btn btn-danger ms-1"
-              onClick={() => handleDeletePost(post)}
-            >
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
+      {posts.length > 0 && (
+        <ul>
+          {posts.map((post, index) => (
+            <li className="mb-1" key={index}>
+              {post.title} ({post.likes} likes)
+              <button
+                className="btn btn-success btn-sm ms-1"
+                onClick={() => handleAddLike(post)}
+              >
+                ♥
+              </button>
+              <button
+                className="btn btn-danger ms-1"
+                onClick={() => handleDeletePost(post)}
+              >
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
