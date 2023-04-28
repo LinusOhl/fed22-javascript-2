@@ -37,7 +37,7 @@ function App() {
 
   return (
     <div className="App">
-      <div className="container w-50">
+      <div className="container mt-3 w-50">
         <h1>Todos</h1>
         <p>
           {todos.filter((todo) => todo.completed).length} / {todos.length} todos
