@@ -1,10 +1,6 @@
 import { useState } from "react";
-import "./App.css";
-
-type Todo = {
-  title: string;
-  completed: boolean;
-};
+import { Todo } from "./types/index";
+import "./assets/scss/App.scss";
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([
