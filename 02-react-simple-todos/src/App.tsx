@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Todo } from "./types/index";
 import "./assets/scss/App.scss";
 
@@ -30,6 +30,12 @@ function App() {
   const handleDeleteTodo = (todoToDelete: Todo) => {
     setTodos(todos.filter((todo) => todo !== todoToDelete));
   };
+
+  useEffect(() => {
+    document.title = `${todos.filter((todo) => todo.completed).length} / ${
+      todos.length
+    } todos completed`;
+  }, [todos]);
 
   return (
     <div className="App">
