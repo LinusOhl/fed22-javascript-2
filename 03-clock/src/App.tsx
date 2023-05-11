@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import Clock from "./components/Clock";
 import "./assets/scss/App.scss";
 
 function App() {
-  const [time, setTime] = useState(() => {
-    return new Date().toLocaleTimeString();
-  });
-
-  useEffect(() => {
-    setInterval(() => {
-      setTime(new Date().toLocaleTimeString());
-    }, 1000);
-  }, []);
+  const [showClock, setShowClock] = useState(false);
 
   return (
     <div className="container">
-      <div className="display-1 text-center">{time}</div>
+      <button
+        className="btn btn-primary"
+        onClick={() => setShowClock(!showClock)}
+      >
+        Toggle clock!
+      </button>
+
+      {showClock && <Clock />}
     </div>
   );
 }
