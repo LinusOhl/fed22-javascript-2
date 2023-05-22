@@ -1,14 +1,24 @@
 import { useEffect, useState } from "react";
 import "./assets/scss/App.scss";
 
+interface IResource {
+  id: number;
+  title: string;
+}
+
 function App() {
   const [resource, setResource] = useState("posts");
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<IResource[]>([]);
 
   useEffect(() => {
-    fetch(`https://jsonplaceholder.typicode.com/${resource}`)
-      .then((res) => res.json())
-      .then((payload) => setData(payload));
+    const fetchData = async () => {
+      const res = await fetch(
+        `https://jsonplaceholder.typicode.com/${resource}`
+      );
+      const payload = (await res.json()) as IResource[];
+      setData(payload);
+    };
+    fetchData();
   }, [resource]);
 
   return (
