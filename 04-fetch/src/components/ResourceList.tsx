@@ -17,7 +17,15 @@ const ResourceList: React.FC<IProps> = ({ error, loading, resource, data }) => {
     return <p>Loading...</p>;
   }
 
-  return resource && data.length > 0 ? (
+  if (!resource) {
+    return <p>Please select a resource to view</p>;
+  }
+
+  if (!data.length) {
+    return <p>No data exists</p>;
+  }
+
+  return (
     <>
       <h2>{resource}</h2>
       <p>
@@ -30,8 +38,6 @@ const ResourceList: React.FC<IProps> = ({ error, loading, resource, data }) => {
         ))}
       </ol>
     </>
-  ) : (
-    <></>
   );
 };
 
