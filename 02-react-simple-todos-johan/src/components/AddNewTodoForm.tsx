@@ -1,18 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
+import { Todo } from "../types";
 
 interface IProps {
-  newTodoTitle: string;
-  setNewTodoTitle: React.Dispatch<React.SetStateAction<string>>;
-  onHandleSubmit: (e: React.FormEvent) => void;
+  onAddTodo: (todo: Todo) => void;
 }
 
-const AddNewTodoForm: React.FC<IProps> = ({
-  onHandleSubmit,
-  newTodoTitle,
-  setNewTodoTitle,
-}) => {
+const AddNewTodoForm: React.FC<IProps> = ({ onAddTodo }) => {
+  const [newTodoTitle, setNewTodoTitle] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    // stop form from submitting
+    e.preventDefault();
+
+    // create a new todo and set a new todos state
+    const newTodo: Todo = {
+      title: newTodoTitle,
+      completed: false,
+    };
+
+    onAddTodo(newTodo);
+
+    // clear newTodoTitle state
+    setNewTodoTitle("");
+  };
+
   return (
-    <form onSubmit={onHandleSubmit} className="mb-3">
+    <form onSubmit={handleSubmit} className="mb-3">
       <div className="input-group">
         <input
           type="text"
@@ -23,7 +36,11 @@ const AddNewTodoForm: React.FC<IProps> = ({
           required
         />
 
-        <button type="submit" className="btn btn-success">
+        <button
+          type="submit"
+          className="btn btn-success"
+          disabled={!newTodoTitle.trim()}
+        >
           Create
         </button>
       </div>
