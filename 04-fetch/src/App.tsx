@@ -1,23 +1,34 @@
 import { useEffect, useState } from "react";
+import { IResource } from "./types";
 import "./assets/scss/App.scss";
-
-interface IResource {
-  id: number;
-  title: string;
-}
+import { getResource } from "./services/API";
 
 function App() {
   const [resource, setResource] = useState("posts");
   const [data, setData] = useState<IResource[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(
-        `https://jsonplaceholder.typicode.com/${resource}`
-      );
-      const payload = (await res.json()) as IResource[];
-      setData(payload);
+      if (!resource) {
+        return;
+      }
+
+      setData([]);
+      setLoading(true);
+
+      try {
+        const payload = await getResource(resource);
+
+        setData(payload);
+        setLoading(false);
+      } catch (e: any) {
+        setLoading(false);
+        setError(e.toString());
+      }
     };
+
     fetchData();
   }, [resource]);
 
@@ -25,7 +36,7 @@ function App() {
     <div className="container">
       <h1 className="mb-3">Fetch</h1>
 
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-between mb-3">
         <button
           onClick={() => setResource("albums")}
           className="btn btn-primary"
@@ -52,7 +63,9 @@ function App() {
         </button>
       </div>
 
-      {data && (
+      {loading && <p>Loading...</p>}
+
+      {!loading && resource && data.length > 0 && (
         <>
           <h2>{resource}</h2>
           <p>
