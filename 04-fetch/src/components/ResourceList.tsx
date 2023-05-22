@@ -1,0 +1,38 @@
+import React from "react";
+import { IResource } from "../types";
+
+interface IProps {
+  error: string;
+  loading: boolean;
+  resource: string;
+  data: IResource[];
+}
+
+const ResourceList: React.FC<IProps> = ({ error, loading, resource, data }) => {
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  return resource && data.length > 0 ? (
+    <>
+      <h2>{resource}</h2>
+      <p>
+        There are {data.length} {resource}.
+      </p>
+
+      <ol>
+        {data.map((item) => (
+          <li key={item.id}>{item.title}</li>
+        ))}
+      </ol>
+    </>
+  ) : (
+    <></>
+  );
+};
+
+export default ResourceList;

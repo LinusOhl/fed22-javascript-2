@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { IResource } from "./types";
 import "./assets/scss/App.scss";
 import { getResource } from "./services/API";
+import ResourceList from "./components/ResourceList";
 
 function App() {
   const [resource, setResource] = useState("posts");
@@ -15,6 +16,7 @@ function App() {
         return;
       }
 
+      setError("");
       setData([]);
       setLoading(true);
 
@@ -22,10 +24,10 @@ function App() {
         const payload = await getResource(resource);
 
         setData(payload);
-        setLoading(false);
       } catch (e: any) {
-        setLoading(false);
         setError(e.toString());
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -58,27 +60,21 @@ function App() {
           Posts
         </button>
 
+        <button onClick={() => setResource("memes")} className="btn btn-info">
+          Memes
+        </button>
+
         <button onClick={() => setResource("todos")} className="btn btn-danger">
           Todos
         </button>
       </div>
 
-      {loading && <p>Loading...</p>}
-
-      {!loading && resource && data.length > 0 && (
-        <>
-          <h2>{resource}</h2>
-          <p>
-            There are {data.length} {resource}.
-          </p>
-
-          <ol>
-            {data.map((item) => (
-              <li key={item.id}>{item.title}</li>
-            ))}
-          </ol>
-        </>
-      )}
+      <ResourceList
+        error={error}
+        loading={loading}
+        resource={resource}
+        data={data}
+      />
     </div>
   );
 }
