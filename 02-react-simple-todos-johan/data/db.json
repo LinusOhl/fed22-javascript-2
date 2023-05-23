@@ -6,11 +6,6 @@
       "completed": true
     },
     {
-      "id": 2,
-      "title": "Drink coffee",
-      "completed": true
-    },
-    {
       "id": 3,
       "title": "Drink MOAR coffee",
       "completed": true
@@ -18,12 +13,32 @@
     {
       "id": 4,
       "title": "Drink ALL THE coffee",
-      "completed": false
+      "completed": true
     },
     {
       "title": "Test",
-      "completed": false,
+      "completed": true,
       "id": 5
+    },
+    {
+      "title": "WOWZER",
+      "completed": true,
+      "id": 7
+    },
+    {
+      "title": "HELP",
+      "completed": true,
+      "id": 8
+    },
+    {
+      "title": "Buy a new car",
+      "completed": true,
+      "id": 10
+    },
+    {
+      "title": "This is a new todo!",
+      "completed": true,
+      "id": 11
     }
   ]
 }

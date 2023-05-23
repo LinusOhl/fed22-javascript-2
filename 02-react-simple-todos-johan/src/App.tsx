@@ -17,17 +17,24 @@ function App() {
   const addTodo = async (todo: Todo) => {
     const data = await TodosAPI.createTodo(todo);
     console.log(data);
-    setTodos([...todos, todo]);
+    // setTodos([...todos, todo]);
+    getTodos();
   };
 
-  const deleteTodo = (todoToDelete: Todo) => {
+  const deleteTodo = async (todoToDelete: Todo) => {
+    const data = await TodosAPI.deleteTodo(todoToDelete);
+    console.log(data);
     // set a new list of todos where the clicked todo is excluded
-    setTodos(todos.filter((todo) => todo !== todoToDelete));
+    // setTodos(todos.filter((todo) => todo !== todoToDelete));
+    getTodos();
   };
 
-  const toggleTodo = (todo: Todo) => {
-    todo.completed = !todo.completed;
-    setTodos([...todos]);
+  const toggleTodo = async (todo: Todo) => {
+    const data = await TodosAPI.updateTodo(todo);
+    console.log(data);
+    // todo.completed = !todo.completed;
+    // setTodos([...todos, data]);
+    getTodos();
   };
 
   // fetch todos when App is being mounted
