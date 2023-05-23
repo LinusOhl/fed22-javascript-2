@@ -1,4 +1,4 @@
 export interface IResource {
-	id: number
-	title: string
+  id: number;
+  title: string;
 }
