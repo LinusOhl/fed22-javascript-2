@@ -1,17 +1,16 @@
-import React from "react";
-import { TodoList } from "../types";
+import React from 'react'
 
 interface IProps {
-  total: number;
-  finished: number;
+	finished: number
+	total: number
 }
 
 const TodoCounter: React.FC<IProps> = ({ finished, total }) => {
-  return (
-    <p>
-      {finished} / {total} todos completed
-    </p>
-  );
-};
+	return (
+		<p className="status">
+			{finished} of {total} todos completed
+		</p>
+	)
+}
 
-export default TodoCounter;
+export default TodoCounter
