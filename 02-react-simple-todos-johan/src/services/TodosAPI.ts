@@ -20,11 +20,8 @@ export const getTodos = async () => {
  * @param data Object with properties and values for the new todo
  */
 export const createTodo = async (todo: Todo) => {
-  const res = await axios.post(`${BASE_URL}/todos`, {
-    title: todo.title,
-    completed: false,
-  });
-  return res.data as Todos;
+  const res = await axios.post(`${BASE_URL}/todos`, todo);
+  return res.data as Todo;
 };
 
 /**
@@ -47,5 +44,5 @@ export const updateTodo = async (todo: Todo) => {
  */
 export const deleteTodo = async (todo: Todo) => {
   const res = await axios.delete(`${BASE_URL}/todos/${todo.id}`);
-  return res.data as Todos;
+  return res.data;
 };

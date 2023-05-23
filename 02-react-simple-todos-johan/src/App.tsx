@@ -15,17 +15,12 @@ function App() {
   };
 
   const addTodo = async (todo: Todo) => {
-    const data = await TodosAPI.createTodo(todo);
-    console.log(data);
-    // setTodos([...todos, todo]);
+    await TodosAPI.createTodo(todo);
     getTodos();
   };
 
   const deleteTodo = async (todoToDelete: Todo) => {
-    const data = await TodosAPI.deleteTodo(todoToDelete);
-    console.log(data);
-    // set a new list of todos where the clicked todo is excluded
-    // setTodos(todos.filter((todo) => todo !== todoToDelete));
+    await TodosAPI.deleteTodo(todoToDelete);
     getTodos();
   };
 
