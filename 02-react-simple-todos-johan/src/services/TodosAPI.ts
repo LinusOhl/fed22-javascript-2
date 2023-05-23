@@ -1,24 +1,31 @@
 /**
  * Service for communicating with the json-server backend
  */
-import axios from 'axios'
-import { Todos } from '../types'
+import axios from "axios";
+import { Todo, Todos } from "../types";
 
-const BASE_URL = 'http://localhost:3000'
+const BASE_URL = "http://localhost:3000";
 
 /**
  * Get all todos
  */
 export const getTodos = async () => {
-	const res = await axios.get(`${BASE_URL}/todos`)
-	return res.data as Todos
-}
+  const res = await axios.get(`${BASE_URL}/todos`);
+  return res.data as Todos;
+};
 
 /**
  * Create a new todo
  *
  * @param data Object with properties and values for the new todo
  */
+export const createTodo = async (todo: Todo) => {
+  const res = await axios.post(`${BASE_URL}/todos`, {
+    title: todo.title,
+    completed: false,
+  });
+  return res.data as Todos;
+};
 
 /**
  * Update a todo
