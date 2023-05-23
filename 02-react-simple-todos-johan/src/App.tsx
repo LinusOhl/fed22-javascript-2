@@ -20,15 +20,12 @@ function App() {
   };
 
   const deleteTodo = async (todoToDelete: Todo) => {
-    await TodosAPI.deleteTodo(todoToDelete);
+    await TodosAPI.deleteTodo(todoToDelete.id!);
     getTodos();
   };
 
   const toggleTodo = async (todo: Todo) => {
-    const data = await TodosAPI.updateTodo(todo);
-    console.log(data);
-    // todo.completed = !todo.completed;
-    // setTodos([...todos, data]);
+    await TodosAPI.updateTodo(todo);
     getTodos();
   };
 
