@@ -10,6 +10,10 @@ const SearchCity: React.FC<IProps> = ({ onGetWeather }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (city.length < 3 || !city) {
+      return;
+    }
+
     onGetWeather(city);
 
     setCity("");
