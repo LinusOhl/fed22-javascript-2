@@ -7,11 +7,39 @@ import Airplane from "./assets/images/747.svg";
 import "./assets/scss/App.scss";
 
 function App() {
+  const [weather, setWeather] = useState<ICurrentWeather>();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const getWeather = async (city: string) => {
+    setWeather(undefined);
+    setError("");
+    setLoading(true);
+
+    try {
+      const data = await getCurrentWeather(city);
+
+      setWeather(data);
+      setLoading(false);
+    } catch (e: any) {
+      setError(e.toString());
+      setLoading(false);
+    }
+  };
+
   return (
     <div id="app" className="container">
-      <SearchCity />
+      <SearchCity onGetWeather={getWeather} />
 
-      <Forecast />
+      {loading && <img src={Airplane}></img>}
+
+      {error && (
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      )}
+
+      {weather && <Forecast cityWeatherData={weather} />}
     </div>
   );
 }
