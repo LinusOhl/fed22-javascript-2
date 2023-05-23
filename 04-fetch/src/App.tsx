@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
+import { getResource } from "./services/API";
 import { IResource } from "./types";
 import "./assets/scss/App.scss";
-import { getResource } from "./services/API";
 import ResourceList from "./components/ResourceList";
 
 function App() {
-  const [resource, setResource] = useState("posts");
+  const [resource, setResource] = useState("");
   const [data, setData] = useState<IResource[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -16,6 +16,8 @@ function App() {
         return;
       }
 
+      // empty data & error before fetching new
+      // and set loading
       setError("");
       setData([]);
       setLoading(true);
@@ -23,14 +25,18 @@ function App() {
       try {
         const payload = await getResource(resource);
 
+        // update data state with resource payload
         setData(payload);
+        setLoading(false);
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
         setError(e.toString());
-      } finally {
         setLoading(false);
       }
     };
 
+    // call function
     fetchData();
   }, [resource]);
 
@@ -45,27 +51,23 @@ function App() {
         >
           Albums
         </button>
-
         <button
           onClick={() => setResource("photos")}
           className="btn btn-success"
         >
           Photos
         </button>
-
         <button
           onClick={() => setResource("posts")}
           className="btn btn-warning"
         >
           Posts
         </button>
-
-        <button onClick={() => setResource("memes")} className="btn btn-info">
-          Memes
-        </button>
-
         <button onClick={() => setResource("todos")} className="btn btn-danger">
           Todos
+        </button>
+        <button onClick={() => setResource("memes")} className="btn btn-info">
+          Memes 😂
         </button>
       </div>
 
