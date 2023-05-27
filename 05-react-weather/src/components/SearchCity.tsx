@@ -41,6 +41,9 @@ const SearchCity: React.FC<IProps> = ({ onGetWeather }) => {
             🔍
           </button>
         </div>
+        {city.trim().length > 0 && city.trim().length < 3 && (
+          <div className="form-text">Please enter at least 3 characters</div>
+        )}
       </form>
     </div>
   );
