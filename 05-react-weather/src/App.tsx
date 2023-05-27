@@ -22,7 +22,7 @@ function App() {
       setWeather(data);
       setLoading(false);
     } catch (e: any) {
-      setError(e.toString());
+      setError(e.message);
       setLoading(false);
     }
   };
@@ -31,7 +31,7 @@ function App() {
     <div id="app" className="container">
       <SearchCity onGetWeather={getWeather} />
 
-      {loading && <img src={Airplane}></img>}
+      {loading && <img src={Airplane} className="img-fluid py-5 w-100"></img>}
 
       {error && (
         <div className="alert alert-danger" role="alert">
