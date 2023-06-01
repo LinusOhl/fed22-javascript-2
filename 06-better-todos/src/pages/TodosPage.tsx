@@ -1,35 +1,18 @@
 import { useEffect, useState } from "react";
 import { Todo, Todos } from "../types";
+import Alert from "react-bootstrap/Alert";
 import ListGroup from "react-bootstrap/ListGroup";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import * as TodosAPI from "../services/TodosAPI";
 
 const TodosPage = () => {
   const [todos, setTodos] = useState<Todos>([]);
+  const location = useLocation();
 
   // Get todos from api
   const getTodos = async () => {
     const data = await TodosAPI.getTodos();
     setTodos(data);
-  };
-
-  // Create a new todo in the API
-  const addTodo = async (todo: Todo) => {
-    await TodosAPI.createTodo(todo);
-    getTodos();
-  };
-
-  // Delete a todo in the api
-  const deleteTodo = async (todo: Todo) => {
-    if (!todo.id) {
-      return;
-    }
-
-    // Delete todo from the api
-    await TodosAPI.deleteTodo(todo.id);
-
-    // Get all the todos from the api
-    getTodos();
   };
 
   // fetch todos when App is being mounted
@@ -40,6 +23,10 @@ const TodosPage = () => {
   return (
     <>
       <h1 className="mb-3">Todos</h1>
+
+      {location.state?.message && (
+        <Alert variant="secondary">{location.state.message}</Alert>
+      )}
 
       {todos.length > 0 && (
         <ListGroup className="todolist">
@@ -57,7 +44,7 @@ const TodosPage = () => {
         </ListGroup>
       )}
 
-      {todos.length === 0 && <p>Yayyy, you have 0 todos to do</p>}
+      {todos.length === 0 && <p>Yayyy, you have 0 todos to do!</p>}
     </>
   );
 };

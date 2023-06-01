@@ -1,19 +1,46 @@
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
-import { Link, useParams } from "react-router-dom";
+import Alert from "react-bootstrap/Alert";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Todo } from "../types";
 import * as TodosAPI from "../services/TodosAPI";
 
 const TodoPage = () => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [todo, setTodo] = useState<Todo | null>(null);
+  const navigate = useNavigate();
   const { id } = useParams();
   const todoId = Number(id);
 
   // Get todo from API
   const getTodo = async (id: number) => {
-    const data = await TodosAPI.getTodo(id);
+    setError(null);
+    setLoading(true);
 
-    setTodo(data);
+    try {
+      const data = await TodosAPI.getTodo(id);
+      setTodo(data);
+    } catch (err: any) {
+      setError(err.message);
+    }
+
+    setLoading(false);
+  };
+
+  // Delete a todo in the api
+  const deleteTodo = async (todo: Todo) => {
+    if (!todo.id) {
+      return;
+    }
+
+    // Delete todo from the api
+    await TodosAPI.deleteTodo(todo.id);
+
+    navigate("/todos", {
+      replace: true,
+      state: { message: `"${todo.title}" was successfully deleted.` },
+    });
   };
 
   // Toggle the completed status of a todo in the api
@@ -23,12 +50,12 @@ const TodoPage = () => {
     }
 
     // Update a todo in the api
-    await TodosAPI.updateTodo(todo.id, {
+    const updatedTodo = await TodosAPI.updateTodo(todo.id, {
       completed: !todo.completed,
     });
 
     // Get all the todos from the api
-    getTodo(todo.id);
+    setTodo(updatedTodo);
   };
 
   useEffect(() => {
@@ -39,8 +66,17 @@ const TodoPage = () => {
     getTodo(todoId);
   }, [todoId]);
 
-  if (!todo) {
+  if (loading || !todo) {
     return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return (
+      <Alert variant="warning">
+        <h1>Something went wrong.</h1>
+        <p>{error}</p>
+      </Alert>
+    );
   }
 
   return (
@@ -59,7 +95,9 @@ const TodoPage = () => {
         <Button variant="secondary" className="mx-1">
           Edit
         </Button>
-        <Button variant="danger">Delete</Button>
+        <Button variant="danger" onClick={() => deleteTodo(todo)}>
+          Delete
+        </Button>
       </div>
 
       <Link to={"/todos"}>
