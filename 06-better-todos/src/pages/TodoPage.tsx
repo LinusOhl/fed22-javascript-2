@@ -107,10 +107,14 @@ const TodoPage = () => {
       </p>
 
       <div className="buttons mb-3">
-        <Button variant="success" onClick={() => toggleTodo(todo)}>
+        <Button variant="primary" onClick={() => toggleTodo(todo)}>
           Toggle
         </Button>
-        <Button variant="warning">Edit</Button>
+        <Link to={`/todos/${todo.id}/edit`}>
+          <Button variant="secondary" className="mx-1">
+            Edit
+          </Button>
+        </Link>
         <Button variant="danger" onClick={() => deleteTodo(todo)}>
           Delete
         </Button>

@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import CreateTodoPage from "./pages/CreateTodoPage";
+import EditTodoPage from "./pages/EditTodoPage";
 import HomePage from "./pages/HomePage";
 import Navigation from "./components/Navigation";
 import NotFound from "./pages/NotFound";
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/todos" element={<TodosPage />} />
           <Route path="/todos/:id" element={<TodoPage />} />
           <Route path="/todos/create" element={<CreateTodoPage />} />
+          <Route path="/todos/:id/edit" element={<EditTodoPage />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

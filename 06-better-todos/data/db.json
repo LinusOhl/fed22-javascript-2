@@ -6,9 +6,14 @@
       "id": 1
     },
     {
-      "title": "Buy a better pc",
+      "title": "new-update",
       "completed": false,
-      "id": 9
+      "id": 2
+    },
+    {
+      "title": "Another one",
+      "completed": true,
+      "id": 3
     }
   ]
 }
