@@ -16,6 +16,21 @@ const TodoPage = () => {
     setTodo(data);
   };
 
+  // Toggle the completed status of a todo in the api
+  const toggleTodo = async (todo: Todo) => {
+    if (!todo.id) {
+      return;
+    }
+
+    // Update a todo in the api
+    await TodosAPI.updateTodo(todo.id, {
+      completed: !todo.completed,
+    });
+
+    // Get all the todos from the api
+    getTodo(todo.id);
+  };
+
   useEffect(() => {
     if (typeof todoId !== "number") {
       return;
@@ -36,6 +51,16 @@ const TodoPage = () => {
         <strong>Status:</strong>{" "}
         {todo.completed ? "Completed" : "Not completed"}
       </p>
+
+      <div className="buttons mb-3">
+        <Button variant="primary" onClick={() => toggleTodo(todo)}>
+          Toggle
+        </Button>
+        <Button variant="secondary" className="mx-1">
+          Edit
+        </Button>
+        <Button variant="danger">Delete</Button>
+      </div>
 
       <Link to={"/todos"}>
         <Button variant="secondary">&laquo; All todos</Button>
