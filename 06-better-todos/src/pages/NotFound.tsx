@@ -1,9 +1,12 @@
+import Image from "react-bootstrap/Image";
+import SadKittyCat from "../assets/images/sad-kitten.gif";
+
 const NotFound = () => {
   return (
     <>
-      <h1>404 Not found</h1>
+      <h1>Sorry, that page could not be found 😔</h1>
 
-      <p>The page does not exist.</p>
+      <Image src={SadKittyCat} fluid />
     </>
   );
 };

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
+import Button from "react-bootstrap/Button";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Todo } from "../types";
 import * as TodosAPI from "../services/TodosAPI";
 
 const TodoPage = () => {
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const [todo, setTodo] = useState<Todo | null>(null);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -19,9 +19,15 @@ const TodoPage = () => {
     setLoading(true);
 
     try {
+      // call TodosAPI
       const data = await TodosAPI.getTodo(id);
+
+      // update todo state with data
       setTodo(data);
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
+      // set error
       setError(err.message);
     }
 
@@ -37,9 +43,17 @@ const TodoPage = () => {
     // Delete todo from the api
     await TodosAPI.deleteTodo(todo.id);
 
-    navigate("/todos", {
+    // Navigate user to `/todos` (using state)
+    // navigate('/todos', {
+    // 	replace: true,
+    // 	state: {
+    // 		message: `Todo "${todo.title}" was successfully deleted`,
+    // 	},
+    // })
+
+    // Navigate user to `/todos` (using search params/query params)
+    navigate("/todos?deleted=true", {
       replace: true,
-      state: { message: `"${todo.title}" was successfully deleted.` },
     });
   };
 
@@ -54,7 +68,7 @@ const TodoPage = () => {
       completed: !todo.completed,
     });
 
-    // Get all the todos from the api
+    // update todo state with the updated todo
     setTodo(updatedTodo);
   };
 
@@ -66,17 +80,21 @@ const TodoPage = () => {
     getTodo(todoId);
   }, [todoId]);
 
-  if (loading || !todo) {
-    return <p>Loading...</p>;
-  }
-
   if (error) {
     return (
       <Alert variant="warning">
-        <h1>Something went wrong.</h1>
+        <h1>Something went wrong!</h1>
         <p>{error}</p>
+
+        <Button variant="primary" onClick={() => getTodo(todoId)}>
+          TRY AGAIN!!!
+        </Button>
       </Alert>
     );
+  }
+
+  if (loading || !todo) {
+    return <p>Loading...</p>;
   }
 
   return (
@@ -89,18 +107,16 @@ const TodoPage = () => {
       </p>
 
       <div className="buttons mb-3">
-        <Button variant="primary" onClick={() => toggleTodo(todo)}>
+        <Button variant="success" onClick={() => toggleTodo(todo)}>
           Toggle
         </Button>
-        <Button variant="secondary" className="mx-1">
-          Edit
-        </Button>
+        <Button variant="warning">Edit</Button>
         <Button variant="danger" onClick={() => deleteTodo(todo)}>
           Delete
         </Button>
       </div>
 
-      <Link to={"/todos"}>
+      <Link to="/todos">
         <Button variant="secondary">&laquo; All todos</Button>
       </Link>
     </>

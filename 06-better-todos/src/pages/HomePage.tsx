@@ -1,9 +1,9 @@
 const HomePage = () => {
   return (
     <>
-      <h1>Welcome to better todos!</h1>
+      <h1>Welcome to Better Todos!</h1>
 
-      <p>This is some text.</p>
+      <p>This text does not exist.</p>
     </>
   );
 };

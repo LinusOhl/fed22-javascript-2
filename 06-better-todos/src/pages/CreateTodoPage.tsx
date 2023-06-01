@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Todo } from "../types";
 import Alert from "react-bootstrap/Alert";
+import { Todo } from "../types";
 import AddNewTodoForm from "../components/AddNewTodoForm";
 import * as TodosAPI from "../services/TodosAPI";
 
@@ -19,6 +19,8 @@ const CreateTodoPage = () => {
       }, 2000);
 
       setSuccess(!!createdTodo);
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setSuccess(false);
     }
@@ -38,7 +40,7 @@ const CreateTodoPage = () => {
 
       {success === false && (
         <Alert variant="warning" className="mt-3">
-          Todo could not be created.
+          Todo could not be created 😔
         </Alert>
       )}
     </>
