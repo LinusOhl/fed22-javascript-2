@@ -4,10 +4,12 @@ import Button from "react-bootstrap/Button";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Todo } from "../types";
 import * as TodosAPI from "../services/TodosAPI";
+import ConfirmationModal from "../components/ConfirmationModal";
 
 const TodoPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [todo, setTodo] = useState<Todo | null>(null);
   const navigate = useNavigate();
   const { id } = useParams();
@@ -115,10 +117,18 @@ const TodoPage = () => {
             Edit
           </Button>
         </Link>
-        <Button variant="danger" onClick={() => deleteTodo(todo)}>
+        <Button variant="danger" onClick={() => setShowConfirmDelete(true)}>
           Delete
         </Button>
       </div>
+
+      <ConfirmationModal
+        show={showConfirmDelete}
+        onCancel={() => setShowConfirmDelete(false)}
+        onConfirm={() => deleteTodo(todo)}
+      >
+        Do you want to delete "{todo.title}"?
+      </ConfirmationModal>
 
       <Link to="/todos">
         <Button variant="secondary">&laquo; All todos</Button>

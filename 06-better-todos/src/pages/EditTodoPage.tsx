@@ -1,27 +1,45 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
 import { Todo } from "../types";
 import * as TodosAPI from "../services/TodosAPI";
 
 const EditTodoPage = () => {
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const [todo, setTodo] = useState<Todo | null>(null);
+  const [todoTitle, setTodoTitle] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
   const todoId = Number(id);
 
   // Get the todo with :id
   const getTodo = async (id: number) => {
-    const data = await TodosAPI.getTodo(id);
+    setError(null);
+    setLoading(true);
 
-    setTodo(data);
+    try {
+      const data = await TodosAPI.getTodo(id);
+      setTodo(data);
+      setTodoTitle(data.title);
+    } catch (err: any) {
+      setError(err.message);
+    }
+
+    setLoading(false);
   };
 
-  const updateTodo = async (id: number) => {
-    const newTodoTitle = "new-update";
-    await TodosAPI.updateTodo(id, { title: newTodoTitle });
+  const updateTodo = async (newTitle: string) => {
+    await TodosAPI.updateTodo(todoId, { title: newTitle });
+  };
 
-    navigate("/todos");
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    updateTodo(todoTitle);
+
+    navigate(`/todos/${todoId}`);
   };
 
   // Call getTodo()
@@ -38,12 +56,48 @@ const EditTodoPage = () => {
     return <p>No todo was found.</p>;
   }
 
+  if (error) {
+    return (
+      <Alert variant="warning">
+        <h1>Something went wrong!</h1>
+        <p>{error}</p>
+
+        <Button variant="primary" onClick={() => getTodo(todoId)}>
+          TRY AGAIN!!!
+        </Button>
+      </Alert>
+    );
+  }
+
+  if (loading || !todo) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <>
-      <div>{todo.title}</div>
-      <Button variant="primary" onClick={() => updateTodo(todoId)}>
-        Edit Todo
-      </Button>
+      <form onSubmit={handleSubmit} className="mb-3">
+        <div className="input-group">
+          <input
+            type="text"
+            className="form-control"
+            placeholder={todo.title}
+            onChange={(e) => setTodoTitle(e.target.value)}
+            value={todoTitle}
+          />
+
+          <button
+            disabled={!todoTitle.trim()}
+            type="submit"
+            className="btn btn-success"
+          >
+            Change
+          </button>
+        </div>
+      </form>
+
+      <Link to={`/todos/${todoId}`}>
+        <Button variant="secondary">&laquo; Go back</Button>
+      </Link>
     </>
   );
 };

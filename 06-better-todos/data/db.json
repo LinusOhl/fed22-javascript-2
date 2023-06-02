@@ -6,14 +6,9 @@
       "id": 1
     },
     {
-      "title": "new-update",
+      "title": "A new title",
       "completed": false,
       "id": 2
-    },
-    {
-      "title": "Another one",
-      "completed": true,
-      "id": 3
     }
   ]
 }
