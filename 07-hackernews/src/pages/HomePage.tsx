@@ -7,7 +7,7 @@ const HomePage = () => {
       <h1>Welcome to HackerNews!</h1>
 
       <Link to="/search">
-        <Button variant="secondary">To search</Button>
+        <Button variant="secondary">Search &raquo;</Button>
       </Link>
     </>
   );
