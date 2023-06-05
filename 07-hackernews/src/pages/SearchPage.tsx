@@ -1,12 +1,33 @@
 import { useEffect, useState, useRef } from "react";
+import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import ListGroup from "react-bootstrap/ListGroup";
+import * as HN_API from "../services/HackerNewsAPI";
+import { HN_SearchResponse } from "../types";
 
 const SearchPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [searchResult, setSearchResult] = useState<HN_SearchResponse | null>(
+    null
+  );
+
+  const searchHackerNews = async (searchQuery: string) => {
+    setError(null);
+    setLoading(true);
+    setSearchResult(null);
+
+    try {
+      const res = await HN_API.searchByDate(searchQuery);
+      setSearchResult(res);
+    } catch (err: any) {
+      setError(err.message);
+    }
+
+    setLoading(false);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,6 +35,8 @@ const SearchPage = () => {
     if (!searchInput.trim().length) {
       return;
     }
+
+    searchHackerNews(searchInput);
   };
 
   return (
@@ -43,18 +66,22 @@ const SearchPage = () => {
         </div>
       </Form>
 
-      {false && <p>Loading...</p>}
+      {error && <Alert variant="warning">{error}</Alert>}
 
-      {true && (
+      {loading && <p>Loading...</p>}
+
+      {searchResult && (
         <div id="search-result">
-          <p>Showing HITS search results for QUERY...</p>
+          <p>
+            Showing {searchResult.nbHits} search results for {searchInput}...
+          </p>
 
           <ListGroup className="mb-3">
-            {[{}].map((hit) => (
-              <ListGroup.Item action href={""} key={""}>
-                <h2 className="h3">TITLE</h2>
+            {searchResult.hits.map((hit) => (
+              <ListGroup.Item action href={hit.url} key={hit.objectID}>
+                <h2 className="h3">{hit.title}</h2>
                 <p className="text-muted small mb-0">
-                  POINTS points by AUTHOR at CREATED_AT
+                  {hit.points} points by {hit.author} at {hit.created_at}
                 </p>
               </ListGroup.Item>
             ))}
