@@ -19,7 +19,8 @@ const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const query = searchParams.get("query");
-  const pageParams = searchParams.get("pageParams");
+  const pageParams = searchParams.get("page");
+  console.log(pageParams);
 
   const searchHackerNews = async (searchQuery: string, searchPage = 0) => {
     setError(null);
@@ -43,8 +44,8 @@ const SearchPage = () => {
       return;
     }
 
-    setPage(0);
-    setSearchParams({ query: searchInput });
+    // setPage(0);
+    setSearchParams({ query: searchInput, page: "0" });
   };
 
   useEffect(() => {
@@ -52,8 +53,8 @@ const SearchPage = () => {
       return;
     }
 
-    searchHackerNews(query, page);
-  }, [query, page]);
+    searchHackerNews(query, Number(pageParams));
+  }, [query, pageParams, searchParams]);
 
   return (
     <>
@@ -104,15 +105,23 @@ const SearchPage = () => {
           </ListGroup>
 
           <Pagination
-            page={page + 1}
+            page={Number(pageParams) + 1}
             totalPages={searchResult.nbPages}
-            hasPreviousPage={page > 0}
-            hasNextPage={page < searchResult.nbPages - 1}
+            hasPreviousPage={Number(pageParams) > 0}
+            hasNextPage={Number(pageParams) < searchResult.nbPages - 1}
             onPreviousPage={() => {
-              setPage((prevValue) => prevValue - 1);
+              setSearchParams({
+                query: String(query),
+                page: String(Number(pageParams) - 1),
+              });
+              // setPage((prevValue) => prevValue - 1);
             }}
             onNextPage={() => {
-              setPage((prevValue) => prevValue + 1);
+              setSearchParams({
+                query: String(query),
+                page: String(Number(pageParams) + 1),
+              });
+              // setPage((prevValue) => prevValue + 1);
             }}
           />
         </div>
