@@ -13,11 +13,14 @@ const SearchPage = () => {
   const [searchResult, setSearchResult] = useState<HN_SearchResponse | null>(
     null
   );
+  const queryRef = useRef("");
 
   const searchHackerNews = async (searchQuery: string) => {
     setError(null);
     setLoading(true);
     setSearchResult(null);
+
+    queryRef.current = searchQuery;
 
     try {
       const res = await HN_API.searchByDate(searchQuery);
@@ -73,7 +76,8 @@ const SearchPage = () => {
       {searchResult && (
         <div id="search-result">
           <p>
-            Showing {searchResult.nbHits} search results for {searchInput}...
+            Showing {searchResult.nbHits} search results for "{queryRef.current}
+            " ...
           </p>
 
           <ListGroup className="mb-3">
