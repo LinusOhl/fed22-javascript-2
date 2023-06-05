@@ -1,4 +1,5 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -15,14 +16,15 @@ const SearchPage = () => {
   const [searchResult, setSearchResult] = useState<HN_SearchResponse | null>(
     null
   );
-  const queryRef = useRef("");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const query = searchParams.get("query");
+  const pageParams = searchParams.get("pageParams");
 
   const searchHackerNews = async (searchQuery: string, searchPage = 0) => {
     setError(null);
     setLoading(true);
     setSearchResult(null);
-
-    queryRef.current = searchQuery;
 
     try {
       const res = await HN_API.searchByDate(searchQuery, searchPage);
@@ -42,16 +44,16 @@ const SearchPage = () => {
     }
 
     setPage(0);
-    searchHackerNews(searchInput, 0);
+    setSearchParams({ query: searchInput });
   };
 
   useEffect(() => {
-    if (!queryRef.current) {
+    if (!query) {
       return;
     }
 
-    searchHackerNews(queryRef.current, page);
-  }, [page]);
+    searchHackerNews(query, page);
+  }, [query, page]);
 
   return (
     <>
@@ -87,8 +89,7 @@ const SearchPage = () => {
       {searchResult && (
         <div id="search-result">
           <p>
-            Showing {searchResult.nbHits} search results for "{queryRef.current}
-            " ...
+            Showing {searchResult.nbHits} search results for "{query}" ...
           </p>
 
           <ListGroup className="mb-3">
