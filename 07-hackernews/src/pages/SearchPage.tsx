@@ -11,7 +11,7 @@ import Pagination from "../components/Pagination";
 const SearchPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(0);
+  // const [page, setPage] = useState(0);
   const [searchInput, setSearchInput] = useState("");
   const [searchResult, setSearchResult] = useState<HN_SearchResponse | null>(
     null
