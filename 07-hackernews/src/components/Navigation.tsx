@@ -1,9 +1,17 @@
+import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { NavLink, Link } from "react-router-dom";
+import { useThemeContext } from "../contexts/ThemeContextProvider";
 
 const Navigation = () => {
+  const { isDarkMode, toggleTheme } = useThemeContext();
+
+  const handleToggleTheme = () => {
+    toggleTheme();
+  };
+
   return (
     <Navbar bg="dark" variant="dark" expand="md">
       <Container>
@@ -17,6 +25,10 @@ const Navigation = () => {
             <Nav.Link as={NavLink} end to="/search">
               Search
             </Nav.Link>
+
+            <Button variant="outline-secondary" onClick={handleToggleTheme}>
+              {isDarkMode ? "🌞" : "🌑"}
+            </Button>
           </Nav>
         </Navbar.Collapse>
       </Container>

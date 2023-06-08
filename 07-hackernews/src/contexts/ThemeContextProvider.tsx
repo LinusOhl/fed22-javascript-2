@@ -1,12 +1,20 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 type ThemeContextType = {
   isDarkMode: boolean;
+  toggleTheme: () => void;
 };
 
 export const ThemeContext = createContext<ThemeContextType>({
   isDarkMode: false,
+  toggleTheme: () => {
+    throw new Error("Using toggleTheme!");
+  },
 });
+
+export const useThemeContext = () => {
+  return useContext(ThemeContext);
+};
 
 interface IProps {
   children: React.ReactNode;
@@ -20,7 +28,7 @@ const ThemeContextProvider: React.FC<IProps> = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={{ isDarkMode }}>
+    <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
