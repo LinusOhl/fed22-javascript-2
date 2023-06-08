@@ -20,7 +20,7 @@ const SearchPage = () => {
 
   const query = searchParams.get("query");
   const pageParams = searchParams.get("page");
-  console.log(pageParams);
+  // console.log(pageParams);
 
   const searchHackerNews = async (searchQuery: string, searchPage = 0) => {
     setError(null);
