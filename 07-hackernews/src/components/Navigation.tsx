@@ -3,7 +3,7 @@ import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { NavLink, Link } from "react-router-dom";
-import { useThemeContext } from "../contexts/ThemeContextProvider";
+import { useThemeContext } from "../hooks/useThemeContext";
 
 const Navigation = () => {
   const { isDarkMode, toggleTheme } = useThemeContext();
@@ -24,6 +24,9 @@ const Navigation = () => {
           <Nav>
             <Nav.Link as={NavLink} end to="/search">
               Search
+            </Nav.Link>
+            <Nav.Link as={NavLink} end to="/random-dog">
+              Random Dog
             </Nav.Link>
 
             <Button variant="outline-secondary" onClick={handleToggleTheme}>

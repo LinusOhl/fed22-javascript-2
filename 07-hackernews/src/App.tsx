@@ -1,18 +1,19 @@
-import claassNames from "classnames";
+import classNames from "classnames";
 import { Routes, Route } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import HomePage from "./pages/HomePage";
 import Navigation from "./components/Navigation";
 import NotFound from "./pages/NotFound";
 import SearchPage from "./pages/SearchPage";
-import { useThemeContext } from "./contexts/ThemeContextProvider";
+import { useThemeContext } from "./hooks/useThemeContext";
+import RandomDogPage from "./pages/RandomDogPage";
 import "./assets/scss/App.scss";
 
 const App = () => {
   const { isDarkMode } = useThemeContext();
 
-  const cssClasses = claassNames({
-    "bd-dark text-white": isDarkMode,
+  const cssClasses = classNames({
+    "bg-dark text-white": isDarkMode,
   });
 
   return (
@@ -22,6 +23,7 @@ const App = () => {
       <Container className="py-3">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/random-dog" element={<RandomDogPage />} />
           <Route path="/search" element={<SearchPage />} />
 
           <Route path="*" element={<NotFound />} />
