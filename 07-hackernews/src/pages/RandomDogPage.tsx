@@ -1,39 +1,10 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
-import { DogAPI_RandomImageResponse } from "../types";
+
+import useGetData from "../hooks/useGetData";
 
 const RandomDogPage = () => {
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<DogAPI_RandomImageResponse | null>(null);
-  const [url, setUrl] = useState<string | null>(null);
-
-  const getData = async (urlParam: string) => {
-    setError("");
-    setLoading(true);
-    setData(null);
-
-    try {
-      const res = await axios.get<DogAPI_RandomImageResponse>(urlParam);
-      setData(res.data);
-    } catch (err: any) {
-      setError(err.message);
-    }
-
-    setLoading(false);
-  };
-
-  console.log(data);
-
-  useEffect(() => {
-    if (!url) {
-      return;
-    }
-
-    getData(url);
-  }, [url]);
+  const { data, setUrl, error, loading } = useGetData();
 
   return (
     <>
