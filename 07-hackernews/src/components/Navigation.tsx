@@ -28,6 +28,9 @@ const Navigation = () => {
             <Nav.Link as={NavLink} end to="/random-dog">
               Random Dog
             </Nav.Link>
+            <Nav.Link as={NavLink} end to="/chuck-norris">
+              Chuck Norris Joke
+            </Nav.Link>
 
             <Button variant="outline-secondary" onClick={handleToggleTheme}>
               {isDarkMode ? "🌞" : "🌑"}

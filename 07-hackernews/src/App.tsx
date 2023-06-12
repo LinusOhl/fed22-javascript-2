@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { Routes, Route } from "react-router-dom";
+import ChuckNorrisPage from "./pages/ChuckNorrisPage";
 import Container from "react-bootstrap/Container";
 import HomePage from "./pages/HomePage";
 import Navigation from "./components/Navigation";
@@ -23,6 +24,7 @@ const App = () => {
       <Container className="py-3">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/chuck-norris" element={<ChuckNorrisPage />} />
           <Route path="/random-dog" element={<RandomDogPage />} />
           <Route path="/search" element={<SearchPage />} />
 

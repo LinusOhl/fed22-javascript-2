@@ -1,10 +1,12 @@
+import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
-
-import useGetData from "../hooks/useGetData";
+import Spinner from "react-bootstrap/Spinner";
+import useRandomDogImage from "../hooks/useRandomDogImage";
 
 const RandomDogPage = () => {
-  const { data, setUrl, error, loading } = useGetData();
+  const { data, changeUrl, error, loading, execute, isError } =
+    useRandomDogImage();
 
   return (
     <>
@@ -13,23 +15,26 @@ const RandomDogPage = () => {
       <div className="mb-3">
         <Button
           variant="primary"
-          onClick={() => setUrl("https://dog.ceo/api/breeds/image/random")}
+          onClick={() => changeUrl("https://dog.ceo/api/breeds/image/random")}
         >
           Random Dog
         </Button>
         <Button
           variant="primary"
           onClick={() =>
-            setUrl("https://dog.ceo/api/breed/boxer/images/random")
+            changeUrl("https://dog.ceo/api/breed/boxer/images/random")
           }
         >
           Random Boxer Dog
         </Button>
+        <Button variant="primary" onClick={() => execute()}>
+          More Dogs!
+        </Button>
       </div>
 
-      {error && <p>{error}</p>}
+      {loading && <Spinner animation="border" variant="secondary" />}
 
-      {loading && <p>Loading...</p>}
+      {isError === true && <Alert variant="warning">{error}</Alert>}
 
       {data && (
         <div>
