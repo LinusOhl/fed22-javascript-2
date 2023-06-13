@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 type ThemeContextType = {
@@ -18,7 +18,11 @@ interface IProps {
 }
 
 const ThemeContextProvider: React.FC<IProps> = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useLocalStorage("hn_darkmode", false);
+  const { storedValue: isDarkMode, setValue: setIsDarkMode } =
+    useLocalStorage<boolean>("hn_darkmode", false);
+  // const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+  //   const hn_darkmode = window.localStorage.getItem("hn_darkmode") ?? "";
+  // });
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
